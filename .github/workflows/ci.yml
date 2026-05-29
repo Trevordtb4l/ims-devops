@@ -43,9 +43,13 @@ jobs:
 
       - name: Run pytest
         env:
-          DATABASE_URL: postgresql://imsuser:imspassword@localhost:5432/imsdb
           DJANGO_SETTINGS_MODULE: config.settings
-          SECRET_KEY: test-secret-key-for-ci
+          SECRET_KEY: test-secret-key-for-ci-pipeline-minimum-32-chars
+          DB_NAME: imsdb
+          DB_USER: imsuser
+          DB_PASSWORD: imspassword
+          DB_HOST: localhost
+          DB_PORT: 5432
         run: |
           cd backend
           python -m pytest ims/tests/test_api.py -v
