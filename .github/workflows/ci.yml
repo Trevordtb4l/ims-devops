@@ -1,0 +1,63 @@
+name: IMS CI Pipeline
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: imsdb
+          POSTGRES_USER: imsuser
+          POSTGRES_PASSWORD: imspassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-django
+
+      - name: Run pytest
+        env:
+          DATABASE_URL: postgresql://imsuser:imspassword@localhost:5432/imsdb
+          DJANGO_SETTINGS_MODULE: config.settings
+          SECRET_KEY: test-secret-key-for-ci
+        run: |
+          cd backend
+          python -m pytest ims/tests/test_api.py -v
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: |
+          docker compose build

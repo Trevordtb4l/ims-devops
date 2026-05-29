@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ims-black: #0f0f0f;
+  --color-ims-card: #1a1a1a;
+  --color-ims-accent: #CFFF00;
+  --color-ims-muted: #888888;
+  --color-ims-border: #2a2a2a;
+  --color-ims-olive: #4a5a00;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: #0f0f0f;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #2a2a2a inset !important;
+  -webkit-text-fill-color: #ffffff !important;
+  caret-color: #ffffff !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+select option {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}
