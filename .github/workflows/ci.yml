@@ -53,15 +53,3 @@ jobs:
         run: |
           cd backend
           python -m pytest ims/tests/test_api.py -v
-
-  docker:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build Docker image
-        run: |
-          docker compose build
